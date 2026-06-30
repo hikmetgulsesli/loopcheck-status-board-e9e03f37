@@ -1,20 +1,22 @@
 // AUTO-GENERATED from Stitch — DO NOT modify layout or CSS
 // Screen: Status Utility - LoopCheck Status Board
-//
+// 
 // AGENT INSTRUCTIONS:
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
-import { useCallback, useState } from 'react';
+import { useState } from "react";
 import { Braces, History, RefreshCw, Route, Server, Settings } from "lucide-react";
 import {
   getInitialStatusBoardState,
   refreshStatus,
+  type CardStatus,
   type StatusBoardState,
-} from '../features/surf-status-utility/act_refresh_status';
-import { toggleOperationalMode } from '../features/surf-status-utility/act_toggle_status';
+} from "../features/surf-status-utility/act_refresh_status";
+import { toggleOperationalMode } from "../features/surf-status-utility/act_toggle_status";
+
 
 export type StatusUtilityLoopcheckStatusBoardActionId = "refresh-status-1" | "documentation-1" | "privacy-2" | "support-3";
 
@@ -23,24 +25,24 @@ export interface StatusUtilityLoopcheckStatusBoardProps {
 
 }
 
+function cardBarClass(status: CardStatus) {
+  return status === "ready" ? "status-bar-ready" : "status-bar-warning";
+}
+
+function chipClass(status: CardStatus) {
+  return status === "ready" ? "status-chip-ready" : "status-chip-warning";
+}
+
+function chipLabel(name: string, status: CardStatus) {
+  if (status === "warning") return "Warning";
+  return name === "Data Pipeline" ? "Normal" : "Active";
+}
+
 export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoopcheckStatusBoardProps) {
   const [state, setState] = useState<StatusBoardState>(getInitialStatusBoardState);
 
-  const refreshAction = actions?.["refresh-status-1"];
-  const handleRefresh = useCallback(() => {
-    setState(refreshStatus);
-    refreshAction?.();
-  }, [refreshAction]);
-
-  const handleToggle = useCallback(() => {
-    setState(toggleOperationalMode);
-  }, []);
-
-  const cardBarClass = (status: StatusBoardState['cards'][number]['status']) =>
-    status === 'ready' ? 'status-bar-ready' : 'status-bar-warning';
-
-  const cardChipClass = (status: StatusBoardState['cards'][number]['status']) =>
-    status === 'ready' ? 'status-chip-ready' : 'status-chip-warning';
+  const handleToggle = () => setState((prev) => toggleOperationalMode(prev));
+  const handleRefresh = () => setState((prev) => refreshStatus(prev));
 
   return (
     <>
@@ -68,7 +70,7 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       <div className="text-right">
       <div className="font-label-mono text-label-mono text-secondary" id="sync-time-display">Last sync: {state.lastSync}</div>
       </div>
-      <button className="btn-primary" type="button" data-action-id="refresh-status-1" onClick={handleRefresh}>
+      <button className="btn-primary" type="button" data-action-id="refresh-status-1" onClick={() => { actions?.["refresh-status-1"]?.(); handleRefresh(); }}>
       <RefreshCw  style={{fontSize: "18px"}} aria-hidden={true} focusable="false" />
                           Refresh Status
                       </button>
@@ -90,51 +92,24 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       </div>
       {/* Status Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-      {/* Card 1 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[0].status)} id="bar-1"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[0].name}</h3>
-      <Server  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[0].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[0].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[0].status)} id="chip-1">{state.cards[0].status === 'ready' ? 'Active' : 'Warning'}</span>
-      </div>
-      </div>
-      {/* Card 2 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[1].status)} id="bar-2"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[1].name}</h3>
-      <Route  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[1].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[1].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[1].status)} id="chip-2">{state.cards[1].status === 'ready' ? 'Normal' : 'Warning'}</span>
-      </div>
-      </div>
-      {/* Card 3 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[2].status)} id="bar-3"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[2].name}</h3>
-      <Braces  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[2].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[2].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[2].status)} id="chip-3">{state.cards[2].status === 'ready' ? 'Active' : 'Warning'}</span>
-      </div>
-      </div>
+      {state.cards.map((card, index) => (
+        <div key={card.id} className="compact-card">
+        <div className={cardBarClass(card.status)} id={`bar-${index + 1}`}></div>
+        <div className="flex justify-between items-start mb-2">
+        <h2 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{card.name}</h2>
+        {index === 0 && <Server  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        {index === 1 && <Route  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        {index === 2 && <Braces  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        </div>
+        <div className="flex justify-between items-end mt-4">
+        <div>
+        <div className="font-label-mono text-label-mono text-outline mb-1">{card.metricLabel}</div>
+        <div className="font-body-md text-body-md font-medium">{card.metricValue}</div>
+        </div>
+        <span className={chipClass(card.status)} id={`chip-${index + 1}`}>{chipLabel(card.name, card.status)}</span>
+        </div>
+        </div>
+      ))}
       </div>
       </main>
       {/* Footer */}
@@ -150,7 +125,7 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       </div>
       </div>
       </footer>
-
+      
     </>
   );
 }
