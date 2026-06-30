@@ -1,0 +1,288 @@
+{
+  "generatedAt": "2026-06-30T06:53:23.271Z",
+  "screenCount": 1,
+  "screens": {
+    "07a53fac1533445f863fae131c6c7c8a": {
+      "screenId": "07a53fac1533445f863fae131c6c7c8a",
+      "materialSymbolsRequired": true,
+      "sections": [
+        {
+          "tag": "header",
+          "layout": "absolute",
+          "classes": [
+            "bg-surface-container-lowest",
+            "dark:bg-inverse-surface",
+            "fixed",
+            "top-0",
+            "w-full",
+            "z-50",
+            "border-b",
+            "border-outline-variant",
+            "dark:border-outline"
+          ],
+          "childCount": 3
+        },
+        {
+          "tag": "main",
+          "layout": "flex-row",
+          "classes": [
+            "flex-grow",
+            "max-w-container-max",
+            "mx-auto",
+            "w-full",
+            "px-margin-mobile",
+            "md:px-margin-desktop",
+            "py-stack-lg"
+          ],
+          "childCount": 30
+        },
+        {
+          "tag": "footer",
+          "layout": "block",
+          "classes": [
+            "bg-surface",
+            "dark:bg-background",
+            "w-full",
+            "py-4",
+            "border-t",
+            "border-outline-variant",
+            "dark:border-outline",
+            "mt-auto"
+          ],
+          "childCount": 3
+        }
+      ],
+      "buttons": [
+        {
+          "kind": "button",
+          "label": "Status",
+          "classes": [
+            "btn-primary"
+          ],
+          "icon": "refresh",
+          "action": "click-action",
+          "expectedBehavior": "produce visible DOM/state/URL feedback; never empty onClick"
+        },
+        {
+          "kind": "button",
+          "label": "System Operational • Last Sync: 12:44:02",
+          "classes": [],
+          "icon": null,
+          "action": "click-action",
+          "expectedBehavior": "produce visible DOM/state/URL feedback; never empty onClick"
+        }
+      ],
+      "inputs": [
+        {
+          "kind": "input",
+          "type": "checkbox",
+          "label": "op-mode-toggle",
+          "placeholder": "",
+          "name": "op-mode-toggle",
+          "classes": [],
+          "expectedBehavior": "controlled value with onChange; validation if required by PRD"
+        }
+      ],
+      "navLinks": [
+        {
+          "kind": "link",
+          "label": "Documentation",
+          "href": "#",
+          "classes": [
+            "text-outline",
+            "dark:text-outline-variant",
+            "hover:text-primary",
+            "dark:hover:text-primary-fixed",
+            "transition-opacity",
+            "duration-200",
+            "font-label-bold",
+            "text-label-bold"
+          ],
+          "icon": null,
+          "action": "navigate",
+          "expectedBehavior": "navigate:#"
+        },
+        {
+          "kind": "link",
+          "label": "Privacy",
+          "href": "#",
+          "classes": [
+            "text-outline",
+            "dark:text-outline-variant",
+            "hover:text-primary",
+            "dark:hover:text-primary-fixed",
+            "transition-opacity",
+            "duration-200",
+            "font-label-bold",
+            "text-label-bold"
+          ],
+          "icon": null,
+          "action": "navigate",
+          "expectedBehavior": "navigate:#"
+        },
+        {
+          "kind": "link",
+          "label": "Support",
+          "href": "#",
+          "classes": [
+            "text-outline",
+            "dark:text-outline-variant",
+            "hover:text-primary",
+            "dark:hover:text-primary-fixed",
+            "transition-opacity",
+            "duration-200",
+            "font-label-bold",
+            "text-label-bold"
+          ],
+          "icon": null,
+          "action": "navigate",
+          "expectedBehavior": "navigate:#"
+        }
+      ],
+      "cards": [],
+      "icons": [
+        "refresh",
+        "history",
+        "settings",
+        "dns",
+        "route",
+        "api"
+      ],
+      "images": [],
+      "cssVars": {},
+      "colorPalette": {
+        "on-tertiary-fixed": "#380d00",
+        "outline": "#737685",
+        "surface-tint": "#0c56d0",
+        "surface-container-low": "#f3f3fd",
+        "surface-container-highest": "#e1e2ec",
+        "tertiary-fixed-dim": "#ffb59b",
+        "primary-container": "#0052cc",
+        "primary-fixed-dim": "#b2c5ff",
+        "background": "#faf8ff",
+        "surface-container-lowest": "#ffffff",
+        "inverse-on-surface": "#f0f0fb",
+        "on-secondary-fixed-variant": "#3a475d",
+        "primary-fixed": "#dae2ff",
+        "tertiary-container": "#a33500",
+        "surface-container-high": "#e7e7f2",
+        "surface-bright": "#faf8ff",
+        "secondary": "#525f75",
+        "error-container": "#ffdad6",
+        "on-primary-container": "#c4d2ff",
+        "on-surface-variant": "#434654",
+        "on-error": "#ffffff",
+        "tertiary-fixed": "#ffdbcf",
+        "on-tertiary": "#ffffff",
+        "surface-dim": "#d9d9e4",
+        "primary": "#003d9b",
+        "secondary-fixed-dim": "#bac7e1",
+        "inverse-surface": "#2e3038",
+        "on-secondary-fixed": "#0e1c2f",
+        "on-secondary": "#ffffff",
+        "surface-container": "#ededf8",
+        "secondary-container": "#d6e3fe",
+        "on-surface": "#191b23",
+        "on-background": "#191b23",
+        "on-primary-fixed-variant": "#0040a2",
+        "on-primary": "#ffffff",
+        "on-error-container": "#93000a",
+        "surface": "#faf8ff",
+        "on-tertiary-container": "#ffc6b2",
+        "on-tertiary-fixed-variant": "#812800",
+        "inverse-primary": "#b2c5ff",
+        "tertiary": "#7b2600",
+        "secondary-fixed": "#d6e3fe",
+        "on-secondary-container": "#58657c",
+        "outline-variant": "#c3c6d6",
+        "error": "#ba1a1a",
+        "on-primary-fixed": "#001848",
+        "surface-variant": "#e1e2ec"
+      },
+      "fonts": [
+        "Material Symbols Outlined",
+        "Inter",
+        "JetBrains Mono"
+      ],
+      "layoutHints": {
+        "gridCols": 1,
+        "flexDirection": "col",
+        "gap": "4"
+      },
+      "behaviorContract": [
+        {
+          "kind": "link",
+          "label": "Documentation",
+          "icon": null,
+          "route": "#",
+          "expectedBehavior": "navigate:#"
+        },
+        {
+          "kind": "link",
+          "label": "Privacy",
+          "icon": null,
+          "route": "#",
+          "expectedBehavior": "navigate:#"
+        },
+        {
+          "kind": "link",
+          "label": "Support",
+          "icon": null,
+          "route": "#",
+          "expectedBehavior": "navigate:#"
+        },
+        {
+          "kind": "button",
+          "label": "Status",
+          "icon": "refresh",
+          "action": "click-action",
+          "expectedBehavior": "produce visible DOM/state/URL feedback; never empty onClick"
+        },
+        {
+          "kind": "button",
+          "label": "System Operational • Last Sync: 12:44:02",
+          "icon": null,
+          "action": "click-action",
+          "expectedBehavior": "produce visible DOM/state/URL feedback; never empty onClick"
+        },
+        {
+          "kind": "input",
+          "label": "op-mode-toggle",
+          "type": "checkbox",
+          "placeholder": "",
+          "expectedBehavior": "controlled value with onChange; validation if required by PRD"
+        }
+      ],
+      "tabBar": [
+        {
+          "kind": "button",
+          "label": "System Operational • Last Sync: 12:44:02",
+          "icon": null,
+          "active": false
+        },
+        {
+          "kind": "link",
+          "label": "Documentation",
+          "icon": null,
+          "route": "#",
+          "active": true
+        },
+        {
+          "kind": "link",
+          "label": "Privacy",
+          "icon": null,
+          "route": "#",
+          "active": true
+        },
+        {
+          "kind": "link",
+          "label": "Support",
+          "icon": null,
+          "route": "#",
+          "active": true
+        }
+      ],
+      "title": "Status Utility - LoopCheck Status Board"
+    }
+  }
+}

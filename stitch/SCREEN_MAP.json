@@ -1,0 +1,11 @@
+[
+  {
+    "screenId": "07a53fac1533445f863fae131c6c7c8a",
+    "name": "Status Utility - LoopCheck Status Board",
+    "type": "app-screen",
+    "description": "Status Utility - LoopCheck Status Board screen",
+    "surfaceIds": [
+      "SURF_STATUS_UTILITY"
+    ]
+  }
+]

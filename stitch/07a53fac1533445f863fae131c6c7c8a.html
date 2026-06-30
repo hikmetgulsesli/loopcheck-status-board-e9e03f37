@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Status Utility - LoopCheck Status Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#380d00",
+                        "outline": "#737685",
+                        "surface-tint": "#0c56d0",
+                        "surface-container-low": "#f3f3fd",
+                        "surface-container-highest": "#e1e2ec",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "primary-container": "#0052cc",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "background": "#faf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-secondary-fixed-variant": "#3a475d",
+                        "primary-fixed": "#dae2ff",
+                        "tertiary-container": "#a33500",
+                        "surface-container-high": "#e7e7f2",
+                        "surface-bright": "#faf8ff",
+                        "secondary": "#525f75",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#c4d2ff",
+                        "on-surface-variant": "#434654",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d9d9e4",
+                        "primary": "#003d9b",
+                        "secondary-fixed-dim": "#bac7e1",
+                        "inverse-surface": "#2e3038",
+                        "on-secondary-fixed": "#0e1c2f",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#ededf8",
+                        "secondary-container": "#d6e3fe",
+                        "on-surface": "#191b23",
+                        "on-background": "#191b23",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface": "#faf8ff",
+                        "on-tertiary-container": "#ffc6b2",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "inverse-primary": "#b2c5ff",
+                        "tertiary": "#7b2600",
+                        "secondary-fixed": "#d6e3fe",
+                        "on-secondary-container": "#58657c",
+                        "outline-variant": "#c3c6d6",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#001848",
+                        "surface-variant": "#e1e2ec"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "stack-lg": "1.5rem",
+                        "stack-md": "0.75rem",
+                        "gutter": "1rem",
+                        "stack-sm": "0.25rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-bold": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-mono": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F4F5F7; }
+        .compact-card { background-color: #FFFFFF; border: 1px solid #DFE1E6; padding: 16px; border-radius: 4px; position: relative; overflow: hidden; }
+        .status-bar-ready { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #1D893B; }
+        .status-bar-warning { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #D97706; }
+        .status-chip-ready { background-color: #E3FCEF; color: #1D893B; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; }
+        .status-chip-warning { background-color: #FFFAE6; color: #D97706; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; }
+        .btn-primary { background-color: #0052CC; color: white; font-weight: bold; font-size: 14px; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary:hover { background-color: #003d9b; }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #DFE1E6; transition: .4s; border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #0052CC; }
+        input:checked + .slider:before { transform: translateX(16px); }
+    </style>
+</head>
+<body class="text-on-background font-body-md antialiased pt-14 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline">
+<div class="flex justify-between items-center h-14 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg font-black text-primary dark:text-inverse-primary">
+                StatusBoard
+            </div>
+<div class="flex items-center gap-4 hidden md:flex">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-surface-container-low transition-colors p-2 rounded active:scale-95 duration-150 ease-in-out" data-icon="refresh">refresh</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-surface-container-low transition-colors p-2 rounded active:scale-95 duration-150 ease-in-out" data-icon="history">history</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-surface-container-low transition-colors p-2 rounded active:scale-95 duration-150 ease-in-out" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg">
+<div class="flex justify-between items-center mb-stack-lg border-b border-outline-variant pb-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">LoopCheck Status Board</h1>
+<p class="font-body-md text-body-md text-secondary mt-1">Real-time system diagnostics and operational state.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-secondary" id="sync-time-display">Last sync: 12:44 PM</div>
+</div>
+<button class="btn-primary" onclick="updateSyncTime()">
+<span class="material-symbols-outlined" style="font-size: 18px;">refresh</span>
+                    Refresh Status
+                </button>
+</div>
+</div>
+<!-- Controls Section -->
+<div class="mb-stack-lg flex items-center justify-between bg-surface-container-lowest p-4 rounded border border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-label-bold text-label-bold text-on-surface">Operational Mode</span>
+<label class="toggle-switch">
+<input checked="" id="op-mode-toggle" onchange="toggleOpMode()" type="checkbox"/>
+<span class="slider"></span>
+</label>
+<span class="status-chip-ready ml-2" id="op-mode-status">Ready</span>
+</div>
+<div class="font-label-mono text-label-mono text-secondary">
+                System Feedback: <span class="text-primary-container" id="sys-feedback">All systems nominal.</span>
+</div>
+</div>
+<!-- Status Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="compact-card">
+<div class="status-bar-ready" id="bar-1"></div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">System Engine</h3>
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">dns</span>
+</div>
+<div class="flex justify-between items-end mt-4">
+<div>
+<div class="font-label-mono text-label-mono text-outline mb-1">Latency</div>
+<div class="font-body-md text-body-md font-medium">12ms</div>
+</div>
+<span class="status-chip-ready" id="chip-1">Active</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="compact-card">
+<div class="status-bar-ready" id="bar-2"></div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Data Pipeline</h3>
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">route</span>
+</div>
+<div class="flex justify-between items-end mt-4">
+<div>
+<div class="font-label-mono text-label-mono text-outline mb-1">Throughput</div>
+<div class="font-body-md text-body-md font-medium">4.2 GB/s</div>
+</div>
+<span class="status-chip-ready" id="chip-2">Normal</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="compact-card">
+<div class="status-bar-ready" id="bar-3"></div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">API Gateway</h3>
+<span class="material-symbols-outlined text-secondary" style="font-size: 20px;">api</span>
+</div>
+<div class="flex justify-between items-end mt-4">
+<div>
+<div class="font-label-mono text-label-mono text-outline mb-1">Error Rate</div>
+<div class="font-body-md text-body-md font-medium">0.01%</div>
+</div>
+<span class="status-chip-ready" id="chip-3">Active</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-background w-full py-4 border-t border-outline-variant dark:border-outline mt-auto">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="font-label-bold text-label-bold text-outline">
+                System Operational • Last Sync: <span id="footer-sync-time">12:44:02</span>
+</div>
+<div class="flex gap-4">
+<a class="text-outline dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity duration-200 font-label-bold text-label-bold" href="#">Documentation</a>
+<a class="text-outline dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity duration-200 font-label-bold text-label-bold" href="#">Privacy</a>
+<a class="text-outline dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity duration-200 font-label-bold text-label-bold" href="#">Support</a>
+</div>
+</div>
+</footer>
+<script>
+        function updateSyncTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            const timeStr = `${hours}:${minutes} ${ampm}`;
+            const fullTimeStr = `${hours}:${minutes}:${seconds}`;
+            
+            document.getElementById('sync-time-display').innerText = `Last sync: ${timeStr}`;
+            document.getElementById('footer-sync-time').innerText = fullTimeStr;
+            
+            const btn = document.querySelector('.btn-primary span');
+            btn.classList.add('animate-spin');
+            setTimeout(() => { btn.classList.remove('animate-spin'); }, 500);
+            
+            document.getElementById('sys-feedback').innerText = "Data refreshed.";
+            setTimeout(() => { document.getElementById('sys-feedback').innerText = "All systems nominal."; }, 2000);
+        }
+
+        function toggleOpMode() {
+            const toggle = document.getElementById('op-mode-toggle');
+            const statusLabel = document.getElementById('op-mode-status');
+            const feedback = document.getElementById('sys-feedback');
+            
+            // Cards elements to update based on state
+            const chips = [document.getElementById('chip-1'), document.getElementById('chip-2'), document.getElementById('chip-3')];
+            const bars = [document.getElementById('bar-1'), document.getElementById('bar-2'), document.getElementById('bar-3')];
+
+            if (toggle.checked) {
+                statusLabel.innerText = "Ready";
+                statusLabel.className = "status-chip-ready ml-2";
+                feedback.innerText = "System resumed.";
+                feedback.className = "text-primary-container";
+                
+                chips.forEach(chip => {
+                    chip.className = "status-chip-ready";
+                    if(chip.id === 'chip-2') chip.innerText = "Normal";
+                    else chip.innerText = "Active";
+                });
+                bars.forEach(bar => {
+                    bar.className = "status-bar-ready";
+                });
+
+            } else {
+                statusLabel.innerText = "Paused";
+                statusLabel.className = "status-chip-warning ml-2";
+                feedback.innerText = "Operations halted by user.";
+                feedback.className = "text-error";
+                
+                chips.forEach(chip => {
+                    chip.className = "status-chip-warning";
+                    chip.innerText = "Paused";
+                });
+                bars.forEach(bar => {
+                    bar.className = "status-bar-warning";
+                });
+            }
+        }
+    </script>
+</body></html>
