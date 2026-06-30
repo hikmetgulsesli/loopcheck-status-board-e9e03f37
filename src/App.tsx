@@ -31,7 +31,7 @@ function AppContent() {
     <div
       data-setfarm-root="baseline"
       data-testid="setfarm-app-root"
-      className="relative min-h-screen w-full overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden pt-14"
     >
       <StatusUtilityLoopcheckStatusBoard actions={screenActions} />
     </div>
