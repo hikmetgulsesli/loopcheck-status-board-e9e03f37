@@ -1,0 +1,77 @@
+[
+  {
+    "screenId": "07a53fac1533445f863fae131c6c7c8a",
+    "screenTitle": "Status Utility - LoopCheck Status Board",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "link",
+        "label": "Documentation",
+        "href": "#",
+        "line": 232
+      },
+      {
+        "type": "link",
+        "label": "Privacy",
+        "href": "#",
+        "line": 233
+      },
+      {
+        "type": "link",
+        "label": "Support",
+        "href": "#",
+        "line": 234
+      },
+      {
+        "type": "button",
+        "label": "Status",
+        "line": 156
+      },
+      {
+        "type": "input",
+        "label": "checkbox",
+        "inputType": "checkbox",
+        "line": 167
+      }
+    ],
+    "navigation": [
+      {
+        "type": "link",
+        "label": "Documentation",
+        "href": "#",
+        "line": 232
+      },
+      {
+        "type": "link",
+        "label": "Privacy",
+        "href": "#",
+        "line": 233
+      },
+      {
+        "type": "link",
+        "label": "Support",
+        "href": "#",
+        "line": 234
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "Status",
+        "line": 156
+      }
+    ],
+    "inputs": [
+      {
+        "type": "input",
+        "label": "checkbox",
+        "inputType": "checkbox",
+        "line": 167
+      }
+    ],
+    "hardcodedData": [],
+    "totalInteractive": 5,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  }
+]
