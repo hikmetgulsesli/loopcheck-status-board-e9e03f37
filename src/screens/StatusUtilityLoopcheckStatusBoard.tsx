@@ -1,14 +1,20 @@
 // AUTO-GENERATED from Stitch — DO NOT modify layout or CSS
 // Screen: Status Utility - LoopCheck Status Board
-// 
+//
 // AGENT INSTRUCTIONS:
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
+import { useCallback, useState } from 'react';
 import { Braces, History, RefreshCw, Route, Server, Settings } from "lucide-react";
-
+import {
+  initialStatusBoardState,
+  refreshStatus,
+  type StatusBoardState,
+} from '../features/surf-status-utility/act_refresh_status';
+import { toggleOperationalMode } from '../features/surf-status-utility/act_toggle_status';
 
 export type StatusUtilityLoopcheckStatusBoardActionId = "refresh-status-1" | "documentation-1" | "privacy-2" | "support-3";
 
@@ -18,6 +24,23 @@ export interface StatusUtilityLoopcheckStatusBoardProps {
 }
 
 export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoopcheckStatusBoardProps) {
+  const [state, setState] = useState<StatusBoardState>(initialStatusBoardState);
+
+  const handleRefresh = useCallback(() => {
+    setState(refreshStatus);
+    actions?.["refresh-status-1"]?.();
+  }, [actions]);
+
+  const handleToggle = useCallback(() => {
+    setState(toggleOperationalMode);
+  }, []);
+
+  const cardBarClass = (status: StatusBoardState['cards'][number]['status']) =>
+    status === 'ready' ? 'status-bar-ready' : 'status-bar-warning';
+
+  const cardChipClass = (status: StatusBoardState['cards'][number]['status']) =>
+    status === 'ready' ? 'status-chip-ready' : 'status-chip-warning';
+
   return (
     <>
       {/* TopAppBar */}
@@ -42,9 +65,9 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       </div>
       <div className="flex items-center gap-4">
       <div className="text-right">
-      <div className="font-label-mono text-label-mono text-secondary" id="sync-time-display">Last sync: 12:44 PM</div>
+      <div className="font-label-mono text-label-mono text-secondary" id="sync-time-display">Last sync: {state.lastSync}</div>
       </div>
-      <button className="btn-primary" type="button" data-action-id="refresh-status-1" onClick={actions?.["refresh-status-1"]}>
+      <button className="btn-primary" type="button" data-action-id="refresh-status-1" onClick={handleRefresh}>
       <RefreshCw  style={{fontSize: "18px"}} aria-hidden={true} focusable="false" />
                           Refresh Status
                       </button>
@@ -55,60 +78,60 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       <div className="flex items-center gap-4">
       <span className="font-label-bold text-label-bold text-on-surface">Operational Mode</span>
       <label className="toggle-switch">
-      <input defaultChecked={true} id="op-mode-toggle" type="checkbox" />
+      <input checked={state.operationalMode} data-action-id="op-mode-toggle" id="op-mode-toggle" onChange={handleToggle} type="checkbox" />
       <span className="slider"></span>
       </label>
-      <span className="status-chip-ready ml-2" id="op-mode-status">Ready</span>
+      <span className={`${state.operationalMode ? 'status-chip-ready' : 'status-chip-warning'} ml-2`} id="op-mode-status">{state.operationalLabel}</span>
       </div>
       <div className="font-label-mono text-label-mono text-secondary">
-                      System Feedback: <span className="text-primary-container" id="sys-feedback">All systems nominal.</span>
+                      System Feedback: <span className="text-primary-container" id="sys-feedback">{state.systemFeedback}</span>
       </div>
       </div>
       {/* Status Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
       {/* Card 1 */}
       <div className="compact-card">
-      <div className="status-bar-ready" id="bar-1"></div>
+      <div className={cardBarClass(state.cards[0].status)} id="bar-1"></div>
       <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">System Engine</h3>
+      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[0].name}</h3>
       <Server  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
       </div>
       <div className="flex justify-between items-end mt-4">
       <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">Latency</div>
-      <div className="font-body-md text-body-md font-medium">12ms</div>
+      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[0].metricLabel}</div>
+      <div className="font-body-md text-body-md font-medium">{state.cards[0].metricValue}</div>
       </div>
-      <span className="status-chip-ready" id="chip-1">Active</span>
+      <span className={cardChipClass(state.cards[0].status)} id="chip-1">{state.cards[0].status === 'ready' ? 'Active' : 'Warning'}</span>
       </div>
       </div>
       {/* Card 2 */}
       <div className="compact-card">
-      <div className="status-bar-ready" id="bar-2"></div>
+      <div className={cardBarClass(state.cards[1].status)} id="bar-2"></div>
       <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Data Pipeline</h3>
+      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[1].name}</h3>
       <Route  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
       </div>
       <div className="flex justify-between items-end mt-4">
       <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">Throughput</div>
-      <div className="font-body-md text-body-md font-medium">4.2 GB/s</div>
+      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[1].metricLabel}</div>
+      <div className="font-body-md text-body-md font-medium">{state.cards[1].metricValue}</div>
       </div>
-      <span className="status-chip-ready" id="chip-2">Normal</span>
+      <span className={cardChipClass(state.cards[1].status)} id="chip-2">{state.cards[1].status === 'ready' ? 'Normal' : 'Warning'}</span>
       </div>
       </div>
       {/* Card 3 */}
       <div className="compact-card">
-      <div className="status-bar-ready" id="bar-3"></div>
+      <div className={cardBarClass(state.cards[2].status)} id="bar-3"></div>
       <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">API Gateway</h3>
+      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[2].name}</h3>
       <Braces  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
       </div>
       <div className="flex justify-between items-end mt-4">
       <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">Error Rate</div>
-      <div className="font-body-md text-body-md font-medium">0.01%</div>
+      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[2].metricLabel}</div>
+      <div className="font-body-md text-body-md font-medium">{state.cards[2].metricValue}</div>
       </div>
-      <span className="status-chip-ready" id="chip-3">Active</span>
+      <span className={cardChipClass(state.cards[2].status)} id="chip-3">{state.cards[2].status === 'ready' ? 'Active' : 'Warning'}</span>
       </div>
       </div>
       </div>
@@ -117,7 +140,7 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       <footer className="bg-surface dark:bg-background w-full py-4 border-t border-outline-variant dark:border-outline mt-auto">
       <div className="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md">
       <div className="font-label-bold text-label-bold text-outline">
-                      System Operational • Last Sync: <span id="footer-sync-time">12:44:02</span>
+                      System Operational • Last Sync: <span id="footer-sync-time">{state.lastSync}</span>
       </div>
       <div className="flex gap-4">
       <a className="text-outline dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-opacity duration-200 font-label-bold text-label-bold" href="#" data-action-id="documentation-1" onClick={(event) => { event.preventDefault(); actions?.["documentation-1"]?.(); }}>Documentation</a>
@@ -126,7 +149,7 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       </div>
       </div>
       </footer>
-      
+
     </>
   );
 }
