@@ -1,0 +1,40 @@
+[
+  {
+    "screenId": "07a53fac1533445f863fae131c6c7c8a",
+    "title": "Status Utility - LoopCheck Status Board",
+    "componentName": "StatusUtilityLoopcheckStatusBoard",
+    "file": "src/screens/StatusUtilityLoopcheckStatusBoard.tsx",
+    "buttons": 1,
+    "inputs": 1,
+    "links": 3,
+    "actions": [
+      {
+        "id": "refresh-status-1",
+        "kind": "button",
+        "label": "Refresh Status",
+        "index": 0
+      },
+      {
+        "id": "documentation-1",
+        "kind": "link",
+        "label": "Documentation",
+        "href": "#",
+        "index": 0
+      },
+      {
+        "id": "privacy-2",
+        "kind": "link",
+        "label": "Privacy",
+        "href": "#",
+        "index": 1
+      },
+      {
+        "id": "support-3",
+        "kind": "link",
+        "label": "Support",
+        "href": "#",
+        "index": 2
+      }
+    ]
+  }
+]
