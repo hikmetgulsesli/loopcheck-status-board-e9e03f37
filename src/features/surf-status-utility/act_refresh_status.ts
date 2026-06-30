@@ -17,7 +17,7 @@ export interface StatusBoardState {
 }
 
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
 
 function randomStatus(): CardStatus {
@@ -34,35 +34,37 @@ function nextMetricValue(card: StatusCard): string {
   return `${(Math.random() * 0.05).toFixed(2)}%`;
 }
 
-export const initialStatusBoardState: StatusBoardState = {
-  lastSync: formatTime(new Date()),
-  operationalMode: true,
-  operationalLabel: 'Ready',
-  systemFeedback: 'All systems nominal.',
-  cards: [
-    {
-      id: 'card-engine',
-      name: 'System Engine',
-      status: 'ready',
-      metricLabel: 'Latency',
-      metricValue: '12ms',
-    },
-    {
-      id: 'card-pipeline',
-      name: 'Data Pipeline',
-      status: 'ready',
-      metricLabel: 'Throughput',
-      metricValue: '4.2 GB/s',
-    },
-    {
-      id: 'card-gateway',
-      name: 'API Gateway',
-      status: 'ready',
-      metricLabel: 'Error Rate',
-      metricValue: '0.01%',
-    },
-  ],
-};
+export function getInitialStatusBoardState(): StatusBoardState {
+  return {
+    lastSync: formatTime(new Date()),
+    operationalMode: true,
+    operationalLabel: 'Ready',
+    systemFeedback: 'All systems nominal.',
+    cards: [
+      {
+        id: 'card-engine',
+        name: 'System Engine',
+        status: 'ready',
+        metricLabel: 'Latency',
+        metricValue: '12ms',
+      },
+      {
+        id: 'card-pipeline',
+        name: 'Data Pipeline',
+        status: 'ready',
+        metricLabel: 'Throughput',
+        metricValue: '4.2 GB/s',
+      },
+      {
+        id: 'card-gateway',
+        name: 'API Gateway',
+        status: 'ready',
+        metricLabel: 'Error Rate',
+        metricValue: '0.01%',
+      },
+    ],
+  };
+}
 
 export function refreshStatus(state: StatusBoardState): StatusBoardState {
   return {

@@ -10,7 +10,7 @@
 import { useCallback, useState } from 'react';
 import { Braces, History, RefreshCw, Route, Server, Settings } from "lucide-react";
 import {
-  initialStatusBoardState,
+  getInitialStatusBoardState,
   refreshStatus,
   type StatusBoardState,
 } from '../features/surf-status-utility/act_refresh_status';
@@ -24,12 +24,13 @@ export interface StatusUtilityLoopcheckStatusBoardProps {
 }
 
 export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoopcheckStatusBoardProps) {
-  const [state, setState] = useState<StatusBoardState>(initialStatusBoardState);
+  const [state, setState] = useState<StatusBoardState>(getInitialStatusBoardState);
 
+  const refreshAction = actions?.["refresh-status-1"];
   const handleRefresh = useCallback(() => {
     setState(refreshStatus);
-    actions?.["refresh-status-1"]?.();
-  }, [actions]);
+    refreshAction?.();
+  }, [refreshAction]);
 
   const handleToggle = useCallback(() => {
     setState(toggleOperationalMode);
