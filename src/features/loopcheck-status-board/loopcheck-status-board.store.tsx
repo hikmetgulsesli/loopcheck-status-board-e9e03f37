@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { loadPersistedState, savePersistedState } from './loopcheck-status-board.repo';
 import type { LoopcheckActions, LoopcheckItem, LoopcheckStatusBoardState } from './loopcheck-status-board.types';
+import { loopcheckFixtureItems } from '../../__fixtures__/loopcheck-status-board.fixture';
 
 const initialState: LoopcheckStatusBoardState = {
   activeScreen: 'Status Utility - LoopCheck Status Board',
@@ -24,18 +25,14 @@ export function LoopcheckStatusBoardProvider({ children }: { children: React.Rea
     setState((prev) => ({ ...prev, storageStatus: 'loading' }));
     try {
       const persisted = loadPersistedState();
-      if (persisted) {
-        const items = persisted.items ?? [];
-        setState((prev) => ({
-          ...prev,
-          items,
-          activePanel: persisted.activePanel ?? null,
-          counts: computeCounts(items),
-          storageStatus: 'ready',
-        }));
-      } else {
-        setState((prev) => ({ ...prev, storageStatus: 'ready' }));
-      }
+      const items = persisted?.items ?? loopcheckFixtureItems;
+      setState((prev) => ({
+        ...prev,
+        items,
+        activePanel: persisted?.activePanel ?? null,
+        counts: computeCounts(items),
+        storageStatus: 'ready',
+      }));
     } catch {
       setState((prev) => ({
         ...prev,
@@ -46,8 +43,10 @@ export function LoopcheckStatusBoardProvider({ children }: { children: React.Rea
   }, []);
 
   useEffect(() => {
-    savePersistedState({ items: state.items, activePanel: state.activePanel });
-  }, [state.items, state.activePanel]);
+    if (state.storageStatus === 'ready') {
+      savePersistedState({ items: state.items, activePanel: state.activePanel });
+    }
+  }, [state.items, state.activePanel, state.storageStatus]);
 
   const actions = useMemo<LoopcheckActions>(
     () => ({
@@ -57,9 +56,13 @@ export function LoopcheckStatusBoardProvider({ children }: { children: React.Rea
             ...item,
             status: (Math.random() > 0.5 ? 'ready' : 'warning') as LoopcheckItem['status'],
           }));
+          const nextSelectedRecord = prev.selectedRecord
+            ? nextItems.find((item) => item.id === prev.selectedRecord!.id) ?? null
+            : null;
           return {
             ...prev,
             items: nextItems,
+            selectedRecord: nextSelectedRecord,
             counts: computeCounts(nextItems),
             lastError: null,
           };
@@ -76,7 +79,15 @@ export function LoopcheckStatusBoardProvider({ children }: { children: React.Rea
           const nextItems = prev.items.map((item) =>
             item.id === id ? { ...item, checked: !item.checked } : item,
           );
-          return { ...prev, items: nextItems, counts: computeCounts(nextItems) };
+          const nextSelectedRecord = prev.selectedRecord
+            ? nextItems.find((item) => item.id === prev.selectedRecord!.id) ?? null
+            : null;
+          return {
+            ...prev,
+            items: nextItems,
+            selectedRecord: nextSelectedRecord,
+            counts: computeCounts(nextItems),
+          };
         });
       },
       setActivePanel: (panel: string | null) => {
