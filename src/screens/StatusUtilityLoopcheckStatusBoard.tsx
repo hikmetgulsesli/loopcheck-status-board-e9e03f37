@@ -12,6 +12,7 @@ import { Braces, History, RefreshCw, Route, Server, Settings } from "lucide-reac
 import {
   getInitialStatusBoardState,
   refreshStatus,
+  type CardStatus,
   type StatusBoardState,
 } from '../features/surf-status-utility/act_refresh_status';
 import { toggleOperationalMode } from '../features/surf-status-utility/act_toggle_status';
@@ -23,24 +24,30 @@ export interface StatusUtilityLoopcheckStatusBoardProps {
 
 }
 
+function chipLabel(id: string, status: CardStatus) {
+  if (status === "warning") return "Warning";
+  return id === "card-pipeline" ? "Normal" : "Active";
+}
+
+function chipClass(status: CardStatus) {
+  return status === 'ready' ? 'status-chip-ready' : 'status-chip-warning';
+}
+
+function barClass(status: CardStatus) {
+  return status === 'ready' ? 'status-bar-ready' : 'status-bar-warning';
+}
+
 export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoopcheckStatusBoardProps) {
   const [state, setState] = useState<StatusBoardState>(getInitialStatusBoardState);
 
-  const refreshAction = actions?.["refresh-status-1"];
   const handleRefresh = useCallback(() => {
-    setState(refreshStatus);
-    refreshAction?.();
-  }, [refreshAction]);
+    setState((prev) => refreshStatus(prev));
+    actions?.["refresh-status-1"]?.();
+  }, [actions]);
 
   const handleToggle = useCallback(() => {
     setState(toggleOperationalMode);
   }, []);
-
-  const cardBarClass = (status: StatusBoardState['cards'][number]['status']) =>
-    status === 'ready' ? 'status-bar-ready' : 'status-bar-warning';
-
-  const cardChipClass = (status: StatusBoardState['cards'][number]['status']) =>
-    status === 'ready' ? 'status-chip-ready' : 'status-chip-warning';
 
   return (
     <>
@@ -90,51 +97,24 @@ export function StatusUtilityLoopcheckStatusBoard({ actions }: StatusUtilityLoop
       </div>
       {/* Status Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-      {/* Card 1 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[0].status)} id="bar-1"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[0].name}</h3>
-      <Server  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[0].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[0].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[0].status)} id="chip-1">{state.cards[0].status === 'ready' ? 'Active' : 'Warning'}</span>
-      </div>
-      </div>
-      {/* Card 2 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[1].status)} id="bar-2"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[1].name}</h3>
-      <Route  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[1].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[1].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[1].status)} id="chip-2">{state.cards[1].status === 'ready' ? 'Normal' : 'Warning'}</span>
-      </div>
-      </div>
-      {/* Card 3 */}
-      <div className="compact-card">
-      <div className={cardBarClass(state.cards[2].status)} id="bar-3"></div>
-      <div className="flex justify-between items-start mb-2">
-      <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{state.cards[2].name}</h3>
-      <Braces  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />
-      </div>
-      <div className="flex justify-between items-end mt-4">
-      <div>
-      <div className="font-label-mono text-label-mono text-outline mb-1">{state.cards[2].metricLabel}</div>
-      <div className="font-body-md text-body-md font-medium">{state.cards[2].metricValue}</div>
-      </div>
-      <span className={cardChipClass(state.cards[2].status)} id="chip-3">{state.cards[2].status === 'ready' ? 'Active' : 'Warning'}</span>
-      </div>
-      </div>
+      {state.cards.map((card, index) => (
+        <div className="compact-card" key={card.id}>
+        <div className={barClass(card.status)} id={`bar-${index + 1}`}></div>
+        <div className="flex justify-between items-start mb-2">
+        <h3 className="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">{card.name}</h3>
+        {card.id === "card-engine" && <Server  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        {card.id === "card-pipeline" && <Route  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        {card.id === "card-gateway" && <Braces  style={{fontSize: "20px"}} className="text-secondary" aria-hidden={true} focusable="false" />}
+        </div>
+        <div className="flex justify-between items-end mt-4">
+        <div>
+        <div className="font-label-mono text-label-mono text-outline mb-1">{card.metricLabel}</div>
+        <div className="font-body-md text-body-md font-medium">{card.metricValue}</div>
+        </div>
+        <span className={chipClass(card.status)} id={`chip-${index + 1}`}>{chipLabel(card.id, card.status)}</span>
+        </div>
+        </div>
+      ))}
       </div>
       </main>
       {/* Footer */}
